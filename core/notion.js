@@ -34,11 +34,16 @@ export class Notion {
           type: "checkbox",
           checkbox: {},
         },
-        Name: {
+        "Title EN": {
           id: "title",
           name: "Name",
           type: "title",
           title: {},
+        },
+        "Title CN": {
+          name: "Property",
+          type: "rich_text",
+          rich_text: {},
         },
         Difficulty: {
           name: "Difficulty",
@@ -82,14 +87,23 @@ export class Notion {
     };
   }
 
-  getQuestionsRequest(databaseId, questionId, question, difficulty, tag, rate) {
+  getQuestionsRequest(
+    databaseId,
+    questionId,
+    question,
+    difficulty,
+    tag,
+    rate,
+    titleCN,
+    urlCN
+  ) {
     console.log(question);
     return {
       properties: {
         Id: {
           number: parseInt(questionId),
         },
-        Name: {
+        "Title EN": {
           id: "title",
           type: "title",
           title: [
@@ -111,6 +125,30 @@ export class Notion {
               },
               plain_text: question.title,
               href: `https://leetcode.com/problems/${question.titleSlug}`,
+            },
+          ],
+        },
+        "Title CN": {
+          type: "rich_text",
+          rich_text: [
+            {
+              type: "text",
+              text: {
+                content: titleCN,
+                link: {
+                  url: urlCN,
+                },
+              },
+              annotations: {
+                bold: false,
+                italic: false,
+                strikethrough: false,
+                underline: false,
+                code: false,
+                color: "default",
+              },
+              plain_text: titleCN,
+              href: urlCN,
             },
           ],
         },
@@ -159,7 +197,9 @@ export class Notion {
     questions,
     difficulty,
     tag,
-    rate
+    rate,
+    titleCN,
+    urlCN
   ) {
     const promises = [];
     for (const question of questions) {
@@ -173,7 +213,9 @@ export class Notion {
               question,
               difficulty,
               tag,
-              rate
+              rate,
+              titleCN,
+              urlCN
             ),
             {
               headers: this.headers,
