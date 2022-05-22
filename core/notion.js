@@ -59,7 +59,7 @@ export class Notion {
                 color: "orange",
               },
               {
-                name: "容易",
+                name: "简单",
                 color: "green",
               },
             ],
